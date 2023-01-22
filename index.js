@@ -1,145 +1,114 @@
-/* eslint-disable no-undef */
-const todoList = () => {
-    all = []
-    const add = (todoItem) => {
-      all.push(todoItem)
+/* eslint-disable no-unused-vars */
+const { connect } = require("./connectDB.js");
+const Todo = require("./TodoModel.js");
+const createTodo = async () => {
+    try {
+      await connect();
+      //const todo=a;
+      const todo = await Todo.addTask({
+        title: "Second Item",
+        dueDate: new Date(),
+        completed: false,
+      });
+      console.log(`Created todo with ID : ${todo.id}`);
+    } catch (error) {
+      console.error(error);
     }
-    const markAsComplete = (index) => {
-      all[index].completed = true
+  };
+  
+  const countItems = async () => {
+    try {
+      const totalCount = await Todo.count();
+      console.log(`Found ${totalCount} items in the table!`);
+    } catch (error) {
+      console.error(error);
     }
-  
-    const overdue = () => {
-      // Write the date check condition here and return the array of overdue items accordingly.
-      // FILL YOUR CODE HERE
-      // ..
-      // ..
-      // ..
-      const a=formattedDate(new Date(new Date().setDate(dateToday.getDate() - 1)));
-      let b=[];
-        for(let i=0;i<all.length;i++){
-            if(all[i].dueDate==a){
-                //console.log(all[i]);
-                b.push(all[i]);
-                
-            }
-        }
-    return b;
+  };
+
+  const getAllTodos = async () => {
+    try {
+      const todos = await Todo.findAll(
+      //   {
+      //   where:{
+      //     completed:false
+      //   },
+      //   order:[
+      //     ['id','DESC']
+      //   ]
+      // }
+      );
+      const todoList = todos.map((todo) => todo.displayableString()).join("\n");
+      console.log(todoList);
+    } catch (error) {
+      console.error(error);
     }
+  };
+
+  const getSingleTodo = async () => {
+    try {
+      const todo = await Todo.findOne(
+        // {
+        //   where: {
+        //     completed: false,
+        //   },
+        //   order: [["id", "DESC"]],
+        // }
+      );
   
-    const dueToday = () => {
-      // Write the date check condition here and return the array of todo items that are due today accordingly.
-      // FILL YOUR CODE HERE
-      // ..
-      // ..
-      // ..
-      const a=formattedDate(dateToday);
-      let b=[];
-        for(let i=0;i<all.length;i++){
-            if(all[i].dueDate==a){
-                //console.log(all[i]);
-                b.push(all[i]);
-                
-            }
-        }
-    return b;
+      console.log(todo.displayableString());
+    } catch (error) {
+      console.error(error);
     }
-  
-    const dueLater = () => {
-      // Write the date check condition here and return the array of todo items that are due later accordingly.
-      // FILL YOUR CODE HERE
-      // ..
-      // ..
-      // ..
-      const a= formattedDate(new Date(new Date().setDate(dateToday.getDate() + 1)))
-      let b=[];
-      for(let i=0;i<all.length;i++){
-          if(all[i].dueDate==a){
-              //console.log(all[i]);
-              b.push(all[i]);
-              
-          }
-      }
-    return b;
+  };
+
+  const updateItem = async (id) => {
+    try {
+      const todo = await Todo.update(
+        { completed: true },
+        {
+          where: {
+            id: id,
+          },
+        }
+      );
+    } catch (error) {
+      console.error(error);
     }
-  
-    const toDisplayableList = (list) => {
-      // Format the To-Do list here, and return the output string as per the format given above.
-      // FILL YOUR CODE HERE
-      // ..
-      // ..
-      // ..
-      // return OUTPUT_STRING
-      let s=""
-      for(let i=0;i<list.length;i++){
-        
-        if(list[i].completed==true){
-            s=s+"["+"x] ";
-        }
-        else{
-            s=s+"[ "+"] ";
-        }
-        const a=formattedDate(dateToday);
-        const b=formattedDate(new Date(new Date().setDate(dateToday.getDate() + 1)))
-        if(list[i].dueDate==a){
-            s=s+list[i].title+" "+"\n";
-        }
-        else{
-            if(i==list.length-1 && b==list[i].dueDate){
-                s=s+list[i].title+". "+list[i].dueDate+"\n";
-            }
-            else{
-                s=s+list[i].title+" "+list[i].dueDate+"\n";
-            }
-        }
-        
-      }
-      return s;
+  };
+
+  const deleteItem = async (id) => {
+    try {
+      const deletedRowCount = await Todo.destroy({
+        where: {
+          id: id,
+        },
+      });
+      // const deletedRowCount = await Todo.destroy({
+      //   truncate: true
+      // });
+      console.log(`Deleted ${deletedRowCount} rows!`);
+    } catch (error) {
+      console.error(error);
     }
-  
-    return { all, add, markAsComplete, overdue, dueToday, dueLater, toDisplayableList };
-  }
-  
-  // ####################################### #
-  // DO NOT CHANGE ANYTHING BELOW THIS LINE. #
-  // ####################################### #
-  
-  const todos = todoList();
-  
-  const formattedDate = d => {
-    return d.toISOString().split("T")[0]
-  }
-  
-  var dateToday = new Date()
-  const today = formattedDate(dateToday)
-  const yesterday = formattedDate(
-    new Date(new Date().setDate(dateToday.getDate() - 1))
-  )
-  const tomorrow = formattedDate(
-    new Date(new Date().setDate(dateToday.getDate() + 1))
-  )
-  
-  todos.add({ title: 'Submit assignment', dueDate: yesterday, completed: false })
-  todos.add({ title: 'Pay rent', dueDate: today, completed: true })
-  todos.add({ title: 'Service Vehicle', dueDate: today, completed: false })
-  todos.add({ title: 'File taxes', dueDate: tomorrow, completed: false })
-  todos.add({ title: 'Pay electric bill', dueDate: tomorrow, completed: false })
-  
-  console.log("My Todo-list\n\n")
-  
-  console.log("Overdue")
-  var overdues = todos.overdue()
-  var formattedOverdues = todos.toDisplayableList(overdues)
-  console.log(formattedOverdues)
-  console.log("\n\n")
-  
-  console.log("Due Today")
-  let itemsDueToday = todos.dueToday()
-  let formattedItemsDueToday = todos.toDisplayableList(itemsDueToday)
-  console.log(formattedItemsDueToday)
-  console.log("\n\n")
-  
-  console.log("Due Later")
-  let itemsDueLater = todos.dueLater()
-  let formattedItemsDueLater = todos.toDisplayableList(itemsDueLater)
-  console.log(formattedItemsDueLater)
-  console.log("\n\n")
+  };
+
+//   (async () => {
+//     //await countItems();
+//     await getAllTodos();
+//     //await updateItem(2);
+//     await deleteItem(2);
+//     await getAllTodos();
+
+// //    await getSingleTodo();
+//   })();
+
+const run = async () => {
+  await createTodo();
+  // await countItems();
+  await getAllTodos();
+  // await updateItem(2);
+  //await deleteItem();
+  //await getAllTodos();
+};
+
+run();
