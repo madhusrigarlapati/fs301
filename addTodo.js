@@ -9,32 +9,7 @@ const createTodo = async (params) => {
     console.error(error);
   }
 };
-// const getAllTodos = async () => {
-//     try {
-//       const todos = await db.Todo.findAll(
-      
-//       );
-//       const todoList = todos.map((todo) => todo.displayableString()).join("\n");
-//       console.log(todoList);
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   };
-// const deleteItem = async () => {
-//   try {
-//     // const deletedRowCount = await db.Todo.destroy({
-//     //   where: {
-//     //     id: id,
-//     //   },
-//     // });
-//     const deletedRowCount = await db.Todo.destroy({
-//       truncate: true
-//     });
-//     console.log(`Deleted ${deletedRowCount} rows!`);
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
+
 
 const getJSDate = (days) => {
   if (!Number.isInteger(days)) {

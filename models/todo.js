@@ -1,30 +1,4 @@
 /* eslint-disable no-unused-vars */
-// /* eslint-disable no-unused-vars */
-// 'use strict';
-// const {
-//   Model
-// } = require('sequelize');
-// module.exports = (sequelize, DataTypes) => {
-//   class Todo extends Model {
-//     /**
-//      * Helper method for defining associations.
-//      * This method is not a part of Sequelize lifecycle.
-//      * The `models/index` file will call this method automatically.
-//      */
-//     static associate(models) {
-//       // define association here
-//     }
-//   }
-//   Todo.init({
-//     title: DataTypes.STRING,
-//     dueDate: DataTypes.DATEONLY,
-//     completed: DataTypes.BOOLEAN
-//   }, {
-//     sequelize,
-//     modelName: 'Todo',
-//   });
-//   return Todo;
-// };
 
 // models/todo.js
 'use strict';
@@ -37,10 +11,6 @@ const todoList = require('../todo');
 const Todo = require('../TodoModel');
 var z = new Date();
 var a = z.toLocaleDateString("en-CA");
-
-// var z1 = new Date();
-// z1.setDate(z1.getDate() + 1);
-// var a1 = z1.toLocaleDateString("en-CA");
 
 module.exports = (sequelize, DataTypes) => {
   class Todo extends Model {
