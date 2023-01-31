@@ -9,6 +9,9 @@ const { Todo } = require("./models");
 app.get("/todos", (req, res) => {
   //res.send("hello world");
   console.log("Todo list");
+  Todo.findAll().then((todos) => {
+    return res.json({ todos });
+  });
 });
 
 app.post("/todos", async (req, res) => {
@@ -40,6 +43,23 @@ app.put("/todos/:id/markAsCompleted", async (req, res) => {
 
 app.delete("/todos/:id", (req, res) => {
   console.log("Delete a todo by ID: ", req.params.id);
+  const todoId = req.params.id;
+  Todo.destroy({
+    where: {
+      id: todoId,
+    },
+  })
+    .then((deleted) => {
+      if (deleted) {
+        return res.json(true);
+      } else {
+        return res.json(false);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      return res.status(422).json(error);
+    });
 });
 
 module.exports = app;
