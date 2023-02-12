@@ -2,6 +2,7 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+const path = require("path");
 app.use(bodyParser.json());
 
 const { Todo } = require("./models");
@@ -61,5 +62,8 @@ app.delete("/todos/:id", (req, res) => {
       return res.status(422).json(error);
     });
 });
+
+app.set("view engine", "ejs");
+app.use(express.static(path.join(__dirname, "public")));
 
 module.exports = app;
