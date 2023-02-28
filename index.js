@@ -117,7 +117,7 @@ const app = require("./app");
 
 //app.set("view engine", "ejs");
 app.get("/", (request, response) => {
-  response.send("index"); // index refers to index.ejs
+  response.render("index"); // index refers to index.ejs
 });
 app.listen(8000, () => {
   console.log("starting the server");
