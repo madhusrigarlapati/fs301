@@ -16,8 +16,8 @@
     "logging": false
   },
   "production": {
-    "username": "postgres",
-    "password": "madhu",
+    "username": "todo_db_2dgt_user",
+    "password": "Uwa74rzv1rQmCQ6Tw1ZQwYbzG0kqFqZz",
     "database": "todo_db_prod",
     "host": "127.0.0.1",
     "dialect": "postgres",
