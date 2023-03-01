@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <title>Index page</title>
+   <link rel="stylesheet" href="/css/styles.css" />
+   <style>
+    .od{
+      display: flex;
+      justify-content: space-around;
+    }
+    .od1{
+      display: flex;
+      /* justify-content: space-between; */
+      justify-content: space-around;
+      
+      padding-right: 350px;
+    }
+    
+    #addedtasks{
+            /* display: grid; */
+            /* align-items: center;
+            justify-content: center; */
+            /* flex-direction: column; */
+            width:90%;
+            color: black; 
+            background-color: #C1E3FF;
+    }
+    .tasks{
+          color: black;
+          width:100%; 
+          height:5%;
+          display: grid;
+          justify-items: center;
+          word-break: keep-all;
+          grid-template-columns: 1fr 1fr 1fr;
+          border:solid 1px black;
+          padding-top: 10px;
+          padding-bottom: 10px;
+          align-items: center;
+          /* padding-left: 20px;
+          padding-right: 20px; */
+          flex-direction: row;
+          justify-content: space-evenly;
+        }
+    body{
+      background-color: navy;
+      color: white;
+    }
+    
+ </style>
+ </head>
+ <body>
+   <!-- <h1>This is index page!</h1>
+   <form action="/" method="get">
+    <h1>This is index page!</h1> -->
+
+   <!-- </form> -->
+   
+    <!-- <h1>OverDue : </h1>
+    <table align="center">
+      <tr >
+        <td><b>Title</b></td>
+          
+        <td><b>DueDate</b></td>
+        
+        <td><b>Completed Status</b></td>
+      </tr>
+      <% for(var i=0;i< todocom.length;i++){ %>
+        <tr >
+          <td><%=todocom[i].title%></td>
+          <td><%=todocom[i].dueDate%></td>
+          <td><%=todocom[i].completed %></td>
+        </tr>
+      <% } %>
+    </table> -->
+    <h1>Over Due : </h1>
+      <div align="center">
+        <div id="addedtasks" >
+          <div class="tasks" >
+            <div><b>Title</b></div>
+            <div><b>DueDate</b></div>
+            <div><b>Completed Status</b></div>
+          </div>
+          <% for(var i=0;i< todocom.length;i++){ %>
+            <div class="tasks" >
+              <div><%=todocom[i].title%></div>
+              <div><%=todocom[i].dueDate%></div>
+              <div><%=todocom[i].completed %></div>
+            </div>
+          <% } %>
+        </div>
+      </div>
+      <br><br>
+   
+   <h1>Due Today : </h1>
+   <div align="center">
+    <div id="addedtasks" >
+      <div class="tasks" >
+        <div><b>Title</b></div>
+        <div><b>DueDate</b></div>
+        <div><b>Completed Status</b></div>
+      </div>
+      <% for(var i=0;i< todotod.length;i++){ %>
+        <div class="tasks" >
+          <div><%=todotod[i].title%> </div>
+          <div><%=todotod[i].dueDate%></div>
+          <div><%=todotod[i].completed %></div>
+        </div>
+      <% } %>
+    </div>
+    </div>
+    <br><br>
+   <h1>Due Later : </h1>
+   <div align="center">
+    <div id="addedtasks" >
+      <div class="tasks" >
+        <div><b>Title</b></div>
+        <div><b>DueDate</b></div>
+        <div><b>Completed Status</b></div>
+      </div>
+    <% for(var i=0;i< todonot.length;i++){ %>
+      <div class="tasks" >
+        <div><%=todonot[i].title%></div>
+        <div><%=todonot[i].dueDate%></div>
+        <div><%=todonot[i].completed %></div>
+      </div> 
+    <% } %>
+  </div>
+  </div>
+    <br><br>
+
+ </body>
+</html>

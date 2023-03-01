@@ -135,6 +135,8 @@
 
 "use strict";
 const { Model } = require("sequelize");
+// var z = new Date();
+//  var a = z.toLocaleDateString("en-CA");
 module.exports = (sequelize, DataTypes) => {
   class Todo extends Model {
     /**
@@ -151,6 +153,15 @@ module.exports = (sequelize, DataTypes) => {
     markAsCompleted() {
       return this.update({ completed: true });
     }
+    // displayableString() {
+    //         let checkbox = this.completed ? "[x]" : "[ ]";
+    //         if(this.dueDate==a){
+    //           return `${this.id}. ${checkbox} ${this.title}`;
+    //         }
+    //         else{
+    //           return `${this.id}. ${checkbox} ${this.title} ${this.dueDate}`;
+    //         }
+    //       }
   }
   Todo.init(
     {
