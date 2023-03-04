@@ -117,65 +117,65 @@
 // const Todo = require('./TodoModel');
 const app = require("./app");
 // const { Op } = require('sequelize')
-const db = require("./models/index");
+//const db = require("./models/index");
 
-var z = new Date();
-var a = z.toLocaleDateString("en-CA");
-//app.set("view engine", "ejs");
-app.get("/", async (request, response) => {
-  db.Todo.findAll().then((todos) => {
-    //const todoList = todos.map((todo) => todo.displayableString()).join("\n");
-    //console.log( todos );
-    var todoList = [];
-    var todoListnot = [];
-    var todoListtod = [];
+// var z = new Date();
+// var a = z.toLocaleDateString("en-CA");
+// //app.set("view engine", "ejs");
+// app.get("/", async (request, response) => {
+//   db.Todo.findAll().then((todos) => {
+//     //const todoList = todos.map((todo) => todo.displayableString()).join("\n");
+//     //console.log( todos );
+//     var todoList = [];
+//     var todoListnot = [];
+//     var todoListtod = [];
 
-    todos.map(async (todo) => {
-      if (todo.dataValues.dueDate < a) {
-        //console.log(todo.dataValues)
-        await todoList.push(todo.dataValues);
-      } else if (todo.dataValues.dueDate > a) {
-        //console.log(todo.dataValues)
-        await todoListnot.push(todo.dataValues);
-      } else {
-        await todoListtod.push(todo.dataValues);
-      }
-    });
-    //console.log(todoList)
-    response.render("index", {
-      l: { todos },
-      todocom: todoList,
-      todonot: todoListnot,
-      todotod: todoListtod,
-    }); // index refers to index.ejs
-  });
-});
+//     todos.map(async (todo) => {
+//       if (todo.dataValues.dueDate < a) {
+//         //console.log(todo.dataValues)
+//         await todoList.push(todo.dataValues);
+//       } else if (todo.dataValues.dueDate > a) {
+//         //console.log(todo.dataValues)
+//         await todoListnot.push(todo.dataValues);
+//       } else {
+//         await todoListtod.push(todo.dataValues);
+//       }
+//     });
+//     //console.log(todoList)
+//     response.render("index", {
+//       l: { todos },
+//       todocom: todoList,
+//       todonot: todoListnot,
+//       todotod: todoListtod,
+//     }); // index refers to index.ejs
+//   });
+// });
 
-app.get("/todo", (request, response) => {
-  db.Todo.findAll().then((todos) => {
-    var todoList = [];
-    var todoListnot = [];
-    var todoListtod = [];
+// app.get("/todo", (request, response) => {
+//   db.Todo.findAll().then((todos) => {
+//     var todoList = [];
+//     var todoListnot = [];
+//     var todoListtod = [];
 
-    todos.map(async (todo) => {
-      if (todo.dataValues.dueDate < a) {
-        //console.log(todo.dataValues)
-        await todoList.push(todo.dataValues);
-      } else if (todo.dataValues.dueDate > a) {
-        //console.log(todo.dataValues)
-        await todoListnot.push(todo.dataValues);
-      } else {
-        await todoListtod.push(todo.dataValues);
-      }
-    });
-    //console.log(todoList)
-    response.render("todo", {
-      todocom: todoList,
-      todonot: todoListnot,
-      todotod: todoListtod,
-    }); // index refers to index.ejs
-  });
-});
-app.listen(8000, () => {
+//     todos.map(async (todo) => {
+//       if (todo.dataValues.dueDate < a) {
+//         //console.log(todo.dataValues)
+//         await todoList.push(todo.dataValues);
+//       } else if (todo.dataValues.dueDate > a) {
+//         //console.log(todo.dataValues)
+//         await todoListnot.push(todo.dataValues);
+//       } else {
+//         await todoListtod.push(todo.dataValues);
+//       }
+//     });
+//     //console.log(todoList)
+//     response.render("todo", {
+//       todocom: todoList,
+//       todonot: todoListnot,
+//       todotod: todoListtod,
+//     }); // index refers to index.ejs
+//   });
+// });
+app.listen(8000 || process.env.PORT, () => {
   console.log("starting the server");
 });

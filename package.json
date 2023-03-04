@@ -208,10 +208,11 @@
   },
   "scripts": {
     "start": "nodemon -e js,ejs",
+    "start:prod":"node index.js",
     "db:create:test": "set NODE_ENV=test& npx sequelize-cli db:create ",
     "pretest": "set NODE_ENV=test& npx sequelize-cli db:drop && set NODE_ENV=test& npx sequelize-cli db:create",
     "test": "set NODE_ENV=test& jest --detectOpenHandles",
-    "prepare":"husky install"
+    "prepare": "husky install"
   },
   "lint-staged": {
     "*.js": [
