@@ -7,11 +7,11 @@
    <link rel="stylesheet" href="/css/styles.css" />
    <style>
     .card {
-        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-        transition: 0.3s;
-        width:20%;
+        /* box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); */
+        /* transition: 0.3s; */
+        width:100%;
         text-align: center;
-        background-color: navy;
+        /* background-color: navy; */
         border-radius: 20px;
         color: white;
       }
@@ -33,9 +33,30 @@
       }
       .two{
         display: flex;
+        width:100%;
         justify-content: space-evenly;
       }
-      
+      .fl{
+        display: flex;
+        justify-content: space-evenly;
+      }
+      .a{
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        transition: 0.3s;
+        width:20%;
+        text-align: center;
+        background-color: navy;
+        border-radius: 20px;
+        color: white;
+        /* background-color: navy;
+        border-radius: 20px;
+        width: 20%; */
+      }
+      a{
+        padding-top: 1px;
+        
+        text-decoration: none;
+      }
    </style>
  </head>
  <body>
@@ -45,31 +66,37 @@
 
    <!-- </form> -->
       <div class="first">
+        <div align="center" class="a">
+        <a href="todo" >
         <div class="card">
           <h1>OverDue</h1>
           <div class="container">
             <h3><%=todocom.length%></h3>
           </div>
-        </div>
-
-        <div class="card">
-          <h1>Due Today</h1>
-          <div class="container">
-            <h3><%=todotod.length%></h3>
+        </div></a></div>
+        <div align="center" class="a">
+          <a href="todo" >
+            <div class="card">
+              <h1>Due Today</h1>
+              <div class="container">
+                <h3><%=todotod.length%></h3>
+              </div>
+            </div></a></div>
           </div>
-        </div>
-      </div>
 
      <br><br>
-
-    <div class="two">
-     <div class="card">
-      <h1>Due Later</h1>
-      <div class="container">
-        <h3><%=todonot.length%></h3>
+     <div class="fl">
+     <div align="center" class="a">
+      <a href="todo" >
+        <!-- <div class="two"> -->
+        <div class="card">
+          <h1>Due Later</h1>
+          <div class="container">
+            <h3><%=todonot.length%></h3>
+          </div>
+        </div></a></div>
       </div>
-    </div>
-  </div>
+  <!-- </div> -->
    
     <br><br>
 
