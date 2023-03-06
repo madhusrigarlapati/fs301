@@ -3,6 +3,7 @@
  <head>
    <meta charset="UTF-8" />
    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <script src="https://cdn.tailwindcss.com"></script>
    <title>Index page</title>
    <link rel="stylesheet" href="/css/styles.css" />
    <style>
@@ -44,10 +45,22 @@
           flex-direction: row;
           justify-content: space-evenly;
         }
-    body{
-      background-color: navy;
-      color: white;
-    }
+        body{
+          /* background-color: navy;
+          color: white; */
+          font-family: sans-serif;
+          background-color: navy;
+          color: white;
+          padding: 4%;
+          /* background: #FFFFFF; */
+        }
+        .Todo-Item:hover .trash-icon{
+          background-color: navy;
+          display: block;
+        }
+        .ttt{
+          background-color: #C1E3FF;
+        }
     
  </style>
  </head>
@@ -75,61 +88,84 @@
         </tr>
       <% } %>
     </table> -->
-    <h1>Over Due : </h1>
-      <div align="center">
-        <div id="addedtasks" >
-          <div class="tasks" >
-            <div><b>Title</b></div>
-            <div><b>DueDate</b></div>
-            <div><b>Completed Status</b></div>
-          </div>
-          <% for(var i=0;i< todocom.length;i++){ %>
-            <div class="tasks" >
-              <div><%=todocom[i].title%></div>
-              <div><%=todocom[i].dueDate%></div>
-              <div><%=todocom[i].completed %></div>
-            </div>
-          <% } %>
-        </div>
+    <div class="grid grid-cols-6">
+      <div class="col-start-3 col-span-2">
+        <h1 class="text-2xl font-semibold text-white-600">
+          My Todo-list
+        </h1>
       </div>
-      <br><br>
-   
-   <h1>Due Today : </h1>
-   <div align="center">
-    <div id="addedtasks" >
-      <div class="tasks" >
-        <div><b>Title</b></div>
-        <div><b>DueDate</b></div>
-        <div><b>Completed Status</b></div>
-      </div>
-      <% for(var i=0;i< todotod.length;i++){ %>
-        <div class="tasks" >
-          <div><%=todotod[i].title%> </div>
-          <div><%=todotod[i].dueDate%></div>
-          <div><%=todotod[i].completed %></div>
-        </div>
-      <% } %>
     </div>
-    </div>
-    <br><br>
-   <h1>Due Later : </h1>
-   <div align="center">
-    <div id="addedtasks" >
-      <div class="tasks" >
-        <div><b>Title</b></div>
-        <div><b>DueDate</b></div>
-        <div><b>Completed Status</b></div>
-      </div>
-    <% for(var i=0;i< todonot.length;i++){ %>
-      <div class="tasks" >
-        <div><%=todonot[i].title%></div>
-        <div><%=todonot[i].dueDate%></div>
-        <div><%=todonot[i].completed %></div>
-      </div> 
-    <% } %>
-  </div>
-  </div>
-    <br><br>
 
+    <form>
+      <div class="flex gap-2 py-4">
+        <div class="flex-auto w-64">
+          <input type="text" class="border border-gray-300 text-gray-900 text-sm rounded w-full p-2" placeholder="What's next?" autofocus required>
+        </div>
+        <div class="flex-auto w-32">
+          <input type="date" class="border border-gray-300 text-gray-900 text-sm rounded w-full p-2 leading-4	">
+        </div>
+        <div class="flex-none">
+          <button type="submit" class="text-white bg-green-600 hover:bg-green-700 font-medium rounded text-sm px-5 py-2 mr-2 mb-2">Add</button>
+        </div>            
+      </div>
+    </form>
+    <div class="mt-2">
+      <h5>Over Due : </h5>
+      <ul class="list-none pl-4 ttt">
+        <% for(var i=0;i< todocom.length;i++){ %>
+        <li class="Todo-Item">
+          <div class="flex items-center w-fit my-2 px-2 py-1 rounded hover:bg-purple-50">
+            <input id="todo-checkbox-1" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300">
+            <label for="todo-checkbox-1" class="ml-2 text-sm text-gray-600 cursor-pointer"><%=todocom[i].title%></label>
+            &nbsp;&nbsp;<a class="hidden trash-icon" href="#!">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </a>
+          </div>              
+        </li>
+        <% } %>
+
+      </ul>
+
+      <br><br>
+
+      <h5>Due Today : </h5>
+      <ul class="list-none pl-4 ttt">
+        <% for(var i=0;i< todotod.length;i++){ %>
+        <li class="Todo-Item">
+          <div class="flex items-center w-fit my-2 px-2 py-1 rounded hover:bg-purple-50">
+            <input id="todo-checkbox-1" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300">
+            <label for="todo-checkbox-1" class="ml-2 text-sm text-gray-600 cursor-pointer"><%=todotod[i].title%></label>
+            &nbsp;&nbsp;<a class="hidden trash-icon" href="#!">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </a>
+          </div>              
+        </li>
+        <% } %>
+
+      </ul>
+      <br><br>
+
+
+      <h5>Due Later : </h5>
+      <ul class="list-none pl-4 ttt">
+        <% for(var i=0;i< todonot.length;i++){ %>
+        <li class="Todo-Item">
+          <div class="flex items-center w-fit my-2 px-2 py-1 rounded hover:bg-purple-50">
+            <input id="todo-checkbox-1" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300">
+            <label for="todo-checkbox-1" class="ml-2 text-sm text-gray-600 cursor-pointer"><%=todonot[i].title%></label>
+            &nbsp;&nbsp;<a class="hidden trash-icon" href="#!">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </a>
+          </div>              
+        </li>
+        <% } %>
+      </ul>
+    </div>
  </body>
 </html>

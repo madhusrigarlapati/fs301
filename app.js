@@ -80,8 +80,6 @@ app.get("/todo", (request, response) => {
   });
 });
 
-app.use(express.static(path.join(__dirname, "public")));
-
 app.get("/todos", (req, res) => {
   //res.send("hello world");
   console.log("Todo list");
