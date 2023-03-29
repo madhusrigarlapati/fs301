@@ -96,13 +96,13 @@
       </div>
     </div>
 
-    <form>
+    <form action="/todos" method="post">
       <div class="flex gap-2 py-4">
         <div class="flex-auto w-64">
-          <input type="text" class="border border-gray-300 text-gray-900 text-sm rounded w-full p-2" placeholder="What's next?" autofocus required>
+          <input type="text" name="title" class="border border-gray-300 text-gray-900 text-sm rounded w-full p-2" placeholder="What's next?" autofocus required>
         </div>
         <div class="flex-auto w-32">
-          <input type="date" class="border border-gray-300 text-gray-900 text-sm rounded w-full p-2 leading-4	">
+          <input type="date" name="dueDate" class="border border-gray-300 text-gray-900 text-sm rounded w-full p-2 leading-4	">
         </div>
         <div class="flex-none">
           <button type="submit" class="text-white bg-green-600 hover:bg-green-700 font-medium rounded text-sm px-5 py-2 mr-2 mb-2">Add</button>

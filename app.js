@@ -4,6 +4,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const path = require("path");
 app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
 
 const { Todo } = require("./models");
 
@@ -85,6 +86,7 @@ app.get("/todos", (req, res) => {
   console.log("Todo list");
   Todo.findAll().then((todos) => {
     return res.json({ todos });
+    // return res.redirect("/")
   });
 });
 
@@ -96,7 +98,8 @@ app.post("/todos", async (req, res) => {
       title: req.body.title,
       dueDate: req.body.dueDate,
     });
-    return res.json(todo);
+    //return res.json(todo);
+    return res.redirect("/todo");
   } catch (error) {
     console.log(error);
     return res.status(422).json(error);
