@@ -46,12 +46,21 @@ app.get("/", async (request, response) => {
       }
     });
     //console.log(todoList)
-    response.render("index", {
-      l: { todos },
-      todocom: todoList,
-      todonot: todoListnot,
-      todotod: todoListtod,
-    }); // index refers to index.ejs
+    if (request.accepts("html")) {
+      response.render("index", {
+        l: { todos },
+        todocom: todoList,
+        todonot: todoListnot,
+        todotod: todoListtod,
+      }); // index refers to index.ejs
+    } else {
+      response.json({
+        l: { todos },
+        todocom: todoList,
+        todonot: todoListnot,
+        todotod: todoListtod,
+      });
+    }
   });
 });
 

@@ -63,6 +63,32 @@
         }
     
  </style>
+ <script>
+    function updateTodo(id){
+      fetch(`/todos/${id}/markAsCompleted`,{
+        method:"put",
+        headers:{"Content-Type":"application/json"},
+      })
+      .then((res)=>{
+        if(res.ok){
+          window.location.reload();
+        }
+      })
+      .catch((err)=>console.error(err));
+    }
+    function deleteTodo(id){
+      fetch(`/todos/${id}/`,{
+        method:"delete",
+        headers:{"Content-Type":"application/json"},
+      })
+      .then((res)=>{
+        if(res.ok){
+          window.location.reload();
+        }
+      })
+      .catch((err)=>console.error(err));
+    }
+ </script>
  </head>
  <body>
    <!-- <h1>This is index page!</h1>
@@ -115,9 +141,9 @@
         <% for(var i=0;i< todocom.length;i++){ %>
         <li class="Todo-Item">
           <div class="flex items-center w-fit my-2 px-2 py-1 rounded hover:bg-purple-50">
-            <input id="todo-checkbox-1" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300">
-            <label for="todo-checkbox-1" class="ml-2 text-sm text-gray-600 cursor-pointer"><%=todocom[i].title%></label>
-            &nbsp;&nbsp;<a class="hidden trash-icon" href="#!">
+            <input id="todo-checkbox-<%=todocom[i].id %>" type="checkbox" <%=todocom[i].completed ? "checked":"" %> value="" onclick="updateTodo(<%=todocom[i].id %>)" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300">
+            <label for="todo-checkbox-<%=todocom[i].id %>" class="ml-2 text-sm text-gray-600 cursor-pointer"><%=todocom[i].title%></label>
+            &nbsp;&nbsp;<a class="hidden trash-icon" href="#!" onclick="deleteTodo(<%=todocom[i].id%>)" >
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg>
@@ -135,9 +161,9 @@
         <% for(var i=0;i< todotod.length;i++){ %>
         <li class="Todo-Item">
           <div class="flex items-center w-fit my-2 px-2 py-1 rounded hover:bg-purple-50">
-            <input id="todo-checkbox-1" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300">
-            <label for="todo-checkbox-1" class="ml-2 text-sm text-gray-600 cursor-pointer"><%=todotod[i].title%></label>
-            &nbsp;&nbsp;<a class="hidden trash-icon" href="#!">
+            <input id="todo-checkbox-<%=todotod[i].id %>" type="checkbox" <%=todotod[i].completed ? "checked":"" %> value="" onclick="updateTodo(<%=todotod[i].id %>)" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300">
+            <label for="todo-checkbox-<%=todotod[i].id %>" class="ml-2 text-sm text-gray-600 cursor-pointer"><%=todotod[i].title%></label>
+            &nbsp;&nbsp;<a class="hidden trash-icon" href="#!" onclick="deleteTodo(<%=todotod[i].id%>)">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg>
@@ -155,9 +181,9 @@
         <% for(var i=0;i< todonot.length;i++){ %>
         <li class="Todo-Item">
           <div class="flex items-center w-fit my-2 px-2 py-1 rounded hover:bg-purple-50">
-            <input id="todo-checkbox-1" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300">
-            <label for="todo-checkbox-1" class="ml-2 text-sm text-gray-600 cursor-pointer"><%=todonot[i].title%></label>
-            &nbsp;&nbsp;<a class="hidden trash-icon" href="#!">
+            <input id="todo-checkbox-<%=todonot[i].id %>" type="checkbox" <%=todonot[i].completed ? "checked":"" %> value="" onclick="updateTodo(<%=todonot[i].id %>)" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300">
+            <label for="todo-checkbox-<%=todonot[i].id %>" class="ml-2 text-sm text-gray-600 cursor-pointer"><%=todonot[i].title%></label>
+            &nbsp;&nbsp;<a class="hidden trash-icon" href="#!" onclick="deleteTodo(<%=todonot[i].id%>)">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg>
