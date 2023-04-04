@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "cheerio": "^1.0.0-rc.12",
     "eslint": "^8.28.0",
     "husky": "^8.0.2",
     "jest": "^29.4.1",
@@ -43,7 +44,9 @@
     "color-name": "^1.1.4",
     "concat-map": "^0.0.1",
     "convert-source-map": "^2.0.0",
+    "cookie-parser": "^1.4.6",
     "cross-spawn": "^7.0.3",
+    "csurf": "^1.11.0",
     "debug": "^4.3.4",
     "dedent": "^0.7.0",
     "deepmerge": "^4.2.2",
@@ -208,7 +211,7 @@
   },
   "scripts": {
     "start": "nodemon -e js,ejs",
-    "start:prod":"node index.js",
+    "start:prod": "node index.js",
     "db:create:test": "set NODE_ENV=test& npx sequelize-cli db:create ",
     "pretest": "set NODE_ENV=test& npx sequelize-cli db:drop && set NODE_ENV=test& npx sequelize-cli db:create",
     "test": "set NODE_ENV=test& jest --detectOpenHandles",

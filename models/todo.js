@@ -161,7 +161,15 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
     markAsCompleted() {
+      // console.log(this);
       return this.update({ completed: true });
+    }
+    setCompletionStatus() {
+      if (this.dataValues.completed == true) {
+        return this.update({ completed: false });
+      } else {
+        return this.update({ completed: true });
+      }
     }
     // displayableString() {
     //         let checkbox = this.completed ? "[x]" : "[ ]";
