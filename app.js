@@ -4,12 +4,12 @@ const app = express();
 const bodyParser = require("body-parser");
 const path = require("path");
 var cookieParser = require("cookie-parser");
-var csrf = require("csurf");
+var csrf = require("tiny-csrf");
 
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser("ssh!some secret string"));
-app.use(csrf({ cookie: true }));
+app.use(csrf("this_should_be_32_character_long", ["POST", "PUT", "DELETE"]));
 
 const { Todo } = require("./models");
 
