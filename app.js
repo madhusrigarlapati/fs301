@@ -205,10 +205,6 @@ app.post("/users", async (req, res) => {
     req.flash("error", "Please Enter First Name");
     return res.redirect("/signup");
   }
-  if (req.body.lastName.length === 0) {
-    req.flash("error", "Please Enter Last Name");
-    return res.redirect("/signup");
-  }
   if (req.body.email.length === 0) {
     req.flash("error", "Please Enter Email");
     return res.redirect("/signup");
