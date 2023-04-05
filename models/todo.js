@@ -180,21 +180,27 @@ module.exports = (sequelize, DataTypes) => {
         return this.update({ completed: true });
       }
     }
-    // displayableString() {
-    //         let checkbox = this.completed ? "[x]" : "[ ]";
-    //         if(this.dueDate==a){
-    //           return `${this.id}. ${checkbox} ${this.title}`;
-    //         }
-    //         else{
-    //           return `${this.id}. ${checkbox} ${this.title} ${this.dueDate}`;
-    //         }
-    //       }
   }
   Todo.init(
     {
-      title: DataTypes.STRING,
-      dueDate: DataTypes.DATEONLY,
-      completed: DataTypes.BOOLEAN,
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: true,
+        },
+      },
+      dueDate: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+        validate: {
+          notNull: true,
+        },
+      },
+      completed: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
     },
     {
       sequelize,

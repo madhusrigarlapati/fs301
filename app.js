@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const path = require("path");
 var cookieParser = require("cookie-parser");
 var csrf = require("tiny-csrf");
+const flash = require("connect-flash");
 
 const passport = require("passport");
 const connectEnsureLogin = require("connect-ensure-login");
@@ -43,7 +44,7 @@ passport.use(
           if (result) {
             return done(null, user);
           } else {
-            return done("Invalid Password");
+            return done(null, false, { message: "Invalid password" });
           }
         })
         .catch((error) => {
@@ -70,7 +71,13 @@ passport.deserializeUser((id, done) => {
 const { Todo, User } = require("./models");
 
 app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
+app.use(flash());
+app.use(function (request, response, next) {
+  response.locals.messages = request.flash();
+  next();
+});
 // app.get("/t",async (req,res)=>{
 //   const allTodos=await Todo.getTodos();
 //   if(req.accepts("html")){
@@ -87,50 +94,50 @@ const db = require("./models/index");
 var z = new Date();
 var a = z.toLocaleDateString("en-CA");
 //app.set("view engine", "ejs");
-app.get("/todo", async (request, response) => {
-  db.Todo.findAll().then((todos) => {
-    //const todoList = todos.map((todo) => todo.displayableString()).join("\n");
-    //console.log( todos );
-    var todoList = [];
-    var todoListnot = [];
-    var todoListtod = [];
-    var completee = [];
+// app.get("/todo", async (request, response) => {
+//   db.Todo.findAll().then((todos) => {
+//     //const todoList = todos.map((todo) => todo.displayableString()).join("\n");
+//     //console.log( todos );
+//     var todoList = [];
+//     var todoListnot = [];
+//     var todoListtod = [];
+//     var completee = [];
 
-    todos.map(async (todo) => {
-      // console.log(todo.dataValues.completed);
-      if (todo.dataValues.completed == true) {
-        // console.log(todo.dataValues)
-        await completee.push(todo.dataValues);
-      } else if (todo.dataValues.dueDate < a) {
-        //console.log(todo.dataValues)
-        await todoList.push(todo.dataValues);
-      } else if (todo.dataValues.dueDate > a) {
-        //console.log(todo.dataValues)
-        await todoListnot.push(todo.dataValues);
-      } else {
-        await todoListtod.push(todo.dataValues);
-      }
-    });
-    //console.log(todoList)
-    if (request.accepts("html")) {
-      response.render("index", {
-        l: { todos },
-        completee: completee,
-        todocom: todoList,
-        todonot: todoListnot,
-        todotod: todoListtod,
-      }); // index refers to index.ejs
-    } else {
-      response.json({
-        l: { todos },
-        completee: completee,
-        todocom: todoList,
-        todonot: todoListnot,
-        todotod: todoListtod,
-      });
-    }
-  });
-});
+//     todos.map(async (todo) => {
+//       // console.log(todo.dataValues.completed);
+//       if (todo.dataValues.completed == true) {
+//         // console.log(todo.dataValues)
+//         await completee.push(todo.dataValues);
+//       } else if (todo.dataValues.dueDate < a) {
+//         //console.log(todo.dataValues)
+//         await todoList.push(todo.dataValues);
+//       } else if (todo.dataValues.dueDate > a) {
+//         //console.log(todo.dataValues)
+//         await todoListnot.push(todo.dataValues);
+//       } else {
+//         await todoListtod.push(todo.dataValues);
+//       }
+//     });
+//     //console.log(todoList)
+//     if (request.accepts("html")) {
+//       response.render("index", {
+//         l: { todos },
+//         completee: completee,
+//         todocom: todoList,
+//         todonot: todoListnot,
+//         todotod: todoListtod,
+//       }); // index refers to index.ejs
+//     } else {
+//       response.json({
+//         l: { todos },
+//         completee: completee,
+//         todocom: todoList,
+//         todonot: todoListnot,
+//         todotod: todoListtod,
+//       });
+//     }
+//   });
+// });
 
 app.get("/", async (req, res) => {
   res.render("todo", {
@@ -194,6 +201,23 @@ app.get("/signup", (req, res) => {
 
 app.post("/users", async (req, res) => {
   // console.log(req.body.lastName);
+  if (req.body.firstName.length === 0) {
+    req.flash("error", "Please Enter First Name");
+    return res.redirect("/signup");
+  }
+  if (req.body.lastName.length === 0) {
+    req.flash("error", "Please Enter Last Name");
+    return res.redirect("/signup");
+  }
+  if (req.body.email.length === 0) {
+    req.flash("error", "Please Enter Email");
+    return res.redirect("/signup");
+  }
+  if (req.body.password.length === 0) {
+    req.flash("error", "Please Enter Password");
+    return res.redirect("/signup");
+  }
+
   const hashedPwd = await bcrypt.hash(req.body.password, saltRounds);
   console.log(hashedPwd);
   try {
@@ -220,8 +244,19 @@ app.get("/login", (req, res) => {
 
 app.post(
   "/session",
-  passport.authenticate("local", { failureRedirect: "/login" }),
+  passport.authenticate("local", {
+    failureRedirect: "/login",
+    failureFlash: true,
+  }),
   (req, res) => {
+    if (req.body.email.length === 0) {
+      req.flash("error", "Error! Please Enter Email");
+      return res.redirect("/login");
+    }
+    if (req.body.password.length === 0) {
+      req.flash("error", "Error! Please Enter Password");
+      return res.redirect("/login");
+    }
     console.log(req.user);
     res.redirect("/todos");
   }
@@ -246,18 +281,27 @@ app.get("/signout", (req, res, next) => {
 
 app.post("/todos", connectEnsureLogin.ensureLoggedIn(), async (req, res) => {
   console.log("Creating a todo", req.body);
-  //Todo
-  try {
-    const todo = await Todo.addTodo({
-      title: req.body.title,
-      dueDate: req.body.dueDate,
-      userId: req.user.id,
-    });
-    //return res.json(todo);
+  if (req.body.title.length === 0) {
+    req.flash("error", "Please Enter title of the todo");
     return res.redirect("/todos");
-  } catch (error) {
-    console.log(error);
-    return res.status(422).json(error);
+  } else if (req.body.dueDate.length === 0) {
+    req.flash("error", "Please Enter due date");
+    return res.redirect("/todos");
+  }
+  //Todo
+  else {
+    try {
+      const todo = await Todo.addTodo({
+        title: req.body.title,
+        dueDate: req.body.dueDate,
+        userId: req.user.id,
+      });
+      //return res.json(todo);
+      return res.redirect("/todos");
+    } catch (error) {
+      console.log(error);
+      return res.status(422).json(error);
+    }
   }
 });
 
