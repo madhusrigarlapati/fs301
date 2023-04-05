@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <meta name="csrf-token" content="<%= csrfToken %>"/>
+   <script src="https://cdn.tailwindcss.com"></script>
+   <title>Index page</title>
+   <link rel="stylesheet" href="/css/styles.css" />
+   
+   <style>
+    .od{
+      display: flex;
+      justify-content: space-around;
+    }
+    .od1{
+      display: flex;
+      /* justify-content: space-between; */
+      justify-content: space-around;
+      
+      padding-right: 350px;
+    }
+    
+    #addedtasks{
+            /* display: grid; */
+            /* align-items: center;
+            justify-content: center; */
+            /* flex-direction: column; */
+            width:90%;
+            color: black; 
+            background-color: #C1E3FF;
+    }
+    .tasks{
+          color: black;
+          width:100%; 
+          height:5%;
+          display: grid;
+          justify-items: center;
+          word-break: keep-all;
+          grid-template-columns: 1fr 1fr 1fr;
+          border:solid 1px black;
+          padding-top: 10px;
+          padding-bottom: 10px;
+          align-items: center;
+          /* padding-left: 20px;
+          padding-right: 20px; */
+          flex-direction: row;
+          justify-content: space-evenly;
+        }
+        body{
+          /* background-color: navy;
+          color: white; */
+          font-family: sans-serif;
+          background-color: navy;
+          color: white;
+          padding: 4%;
+          /* background: #FFFFFF; */
+        }
+        .Todo-Item:hover .trash-icon{
+          background-color: navy;
+          display: block;
+        }
+        .ttt{
+          background-color: #C1E3FF;
+        }
+        .card {
+        /* box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); */
+        /* transition: 0.3s; */
+        text-align: center;
+        background-color: #C1E3FF;
+        border-radius: 2px;
+        color: navy;
+        padding: 5px;
+        /* width: 20px; */
+        margin: 5px;
+      }
+      .gri{
+        width:70%;
+      }
+      .card:hover {
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+      }
+    
+ </style>
+ <script>
+    var token =document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+    function updateTodo(id){
+      fetch(`/todos/${id}/`,{
+        method:"put",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({
+          "_csrf":token
+        })
+      })
+      .then((res)=>{
+        if(res.ok){
+          window.location.reload();
+        }
+      })
+      .catch((err)=>console.error(err));
+    }
+    function deleteTodo(id){
+      fetch(`/todos/${id}/`,{
+        method:"delete",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({
+          "_csrf":token
+        })
+      })
+      .then((res)=>{
+        if(res.ok){
+          window.location.reload();
+        }
+      })
+      .catch((err)=>console.error(err));
+    }
+ </script>
+ </head>
+ <body>
+  
+    <div align="center">
+      <div class="gri" align="center">
+      
+        <%- include('header.ejs') %>
+        <a href="/signout">Signout</a>
+    <form action="/todos" method="post">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+      <div class="flex gap-2 py-4">
+        <div class="flex-auto w-64">
+          <input type="text" name="title" class="border border-gray-300 text-gray-900 text-sm rounded w-full p-2" placeholder="What's next?" autofocus required>
+        </div>
+        <div class="flex-auto w-32">
+          <input type="date" name="dueDate" class="border border-gray-300 text-gray-900 text-sm rounded w-full p-2 leading-4	" required>
+        </div>
+        <div class="flex-none">
+          <button type="submit" class="text-white bg-green-600 hover:bg-green-700 font-medium rounded text-sm px-5 py-2 mr-2 mb-2">Add</button>
+        </div>            
+      </div>
+    </form>
+    <div class="mt-2">
+      <div class="m" >
+          <span >OverDue</span>
+          <span class="card">
+          <span class="container">
+            <%=todocom.length%>
+          </span>
+        </span>&nbsp;:
+      </div>
+      <ul class="list-none pl-4 ttt">
+        <% for(var i=0;i< todocom.length;i++){ %>
+        <li class="Todo-Item">
+          <div class="flex items-center w-fit my-2 px-2 py-1 rounded hover:bg-purple-50">
+            <input id="todo-checkbox-<%=todocom[i].id %>" type="checkbox" <%=todocom[i].completed ? "checked":"" %> value="" onclick="updateTodo(<%=todocom[i].id %>)" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300">
+            <label for="todo-checkbox-<%=todocom[i].id %>" class="ml-2 text-sm text-gray-600 cursor-pointer"><strong><%=todocom[i].title%></strong></label>
+            &nbsp;&nbsp;<a class="hidden trash-icon" href="#!" onclick="deleteTodo(<%=todocom[i].id%>)" >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </a>
+          </div>              
+        </li>
+        <% } %>
+
+      </ul>
+
+      <br><br>
+
+      <!-- <h5>Due Today : </h5> -->
+      <div class="m">
+        DueToday
+        <span class="card">
+        <span class="container">
+          <%=todotod.length%>
+        </span>
+      </span>&nbsp;:
+    </div>
+      <ul class="list-none pl-4 ttt">
+        <% for(var i=0;i< todotod.length;i++){ %>
+        <li class="Todo-Item">
+          <div class="flex items-center w-fit my-2 px-2 py-1 rounded hover:bg-purple-50">
+            <input id="todo-checkbox-<%=todotod[i].id %>" type="checkbox" <%=todotod[i].completed ? "checked":"" %> value="" onclick="updateTodo(<%=todotod[i].id %>)" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300">
+            <label for="todo-checkbox-<%=todotod[i].id %>" class="ml-2 text-sm text-gray-600 cursor-pointer"><strong><%=todotod[i].title%></strong></label>
+            &nbsp;&nbsp;<a class="hidden trash-icon" href="#!" onclick="deleteTodo(<%=todotod[i].id%>)">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </a>
+          </div>              
+        </li>
+        <% } %>
+
+      </ul>
+      <br><br>
+
+
+      <!-- <h5>Due Later : </h5> -->
+      <div class="m">
+        DueLater
+        <span class="card">
+        <span class="container">
+          <%=todonot.length%>
+        </span>
+      </span>&nbsp;:
+    </div>
+      <ul class="list-none pl-4 ttt">
+        <% for(var i=0;i< todonot.length;i++){ %>
+        <li class="Todo-Item">
+          <div class="flex items-center w-fit my-2 px-2 py-1 rounded hover:bg-purple-50">
+            <input id="todo-checkbox-<%=todonot[i].id %>" type="checkbox" <%=todonot[i].completed ? "checked":"" %> value="" onclick="updateTodo(<%=todonot[i].id %>)" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300">
+            <label for="todo-checkbox-<%=todonot[i].id %>" class="ml-2 text-sm text-gray-600 cursor-pointer"><strong><%=todonot[i].title%></strong></label>
+            &nbsp;&nbsp;<a class="hidden trash-icon" href="#!" onclick="deleteTodo(<%=todonot[i].id%>)">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </a>
+          </div>              
+        </li>
+        <% } %>
+      </ul>
+
+      <br><br>
+      <div class="m">
+        Completed Tasks
+        <span class="card">
+        <span class="container">
+          <%=completee.length%>
+        </span>
+      </span>&nbsp;:
+    </div>
+      <ul class="list-none pl-4 ttt">
+        <% for(var i=0;i< completee.length;i++){ %>
+        <li class="Todo-Item">
+          <div class="flex items-center w-fit my-2 px-2 py-1 rounded hover:bg-purple-50">
+            <input id="todo-checkbox-<%=completee[i].id %>" type="checkbox" <%=completee[i].completed ? "checked":"" %> value="" onclick="updateTodo(<%=completee[i].id %>)" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300">
+            <label for="todo-checkbox-<%=completee[i].id %>" class="ml-2 text-sm text-gray-600 cursor-pointer"><strong><%=completee[i].title%></strong></label>
+            &nbsp;&nbsp;<a class="hidden trash-icon" href="#!" onclick="deleteTodo(<%=completee[i].id%>)">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </a>
+          </div>              
+        </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</div>
+ </body>
+</html>
